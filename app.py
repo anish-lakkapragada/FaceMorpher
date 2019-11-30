@@ -49,4 +49,4 @@ def get_video(num_steps):
     try:
         return send_file("video.mov", as_attachment=False)
     except FileNotFoundError:
-        abort(404)
+        return "not found"
