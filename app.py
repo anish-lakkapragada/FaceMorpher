@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # load the model 
 
-models = torch.load("dcgan_model.pth", map_location=torch.device('cpu') )
+models = torch.load("src/dcgan_model.pth", map_location=torch.device('cpu') )
 params = {
     "bsize" : 128,# Batch size during training.
     'imsize' : 64,# Spatial size of training images. All images will be resized to this size during preprocessing.
@@ -24,6 +24,10 @@ generator = Generator(params)
 generator.load_state_dict(models['generator'])
 
 # got the model loaded!
+
+@app.route("/")
+def index(): 
+    return "default"
 
 @app.route("/getVideo/<int:num_steps>")
 def get_video(num_steps): 
@@ -46,7 +50,3 @@ def get_video(num_steps):
         return send_file("video.mov", as_attachment=False)
     except FileNotFoundError:
         abort(404)
-
-
-if __name__ == "__main__":
-    app.run(debug=True) 
