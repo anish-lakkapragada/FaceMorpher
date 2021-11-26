@@ -2,6 +2,7 @@ from flask import Flask, render_template, send_file, abort, send_from_directory
 import imageio
 import torch, numpy as np
 from model import Generator
+import os
 
 app = Flask(__name__)
 
@@ -25,6 +26,9 @@ generator.load_state_dict(models['generator'])
 
 # got the model loaded!
 
+@app.route("/")
+def base(): return "dankit" 
+
 @app.route("/getVideo/<int:num_steps>")
 def get_video(num_steps): 
     image_noises = [torch.randn(1, 100, 1, 1) for i in range(2)]
@@ -46,6 +50,20 @@ def get_video(num_steps):
         return send_file("video.mov", as_attachment=False)
     except FileNotFoundError:
         return "not found"
+    
+
+@app.after_request
+def add_header(r):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes.
+    """
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    r.headers["Pragma"] = "no-cache"
+    r.headers["Expires"] = "0"
+    r.headers['Cache-Control'] = 'public, max-age=0'
+    print("HAD to SEND THIS")
+    return r
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run("0.0.0.0")
