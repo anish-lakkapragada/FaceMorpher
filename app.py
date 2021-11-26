@@ -29,9 +29,16 @@ generator.load_state_dict(models['generator'])
 @app.route("/")
 def base(): return "dankit" 
 
-@app.route("/getVideo/<int:num_steps>")
-def get_video(num_steps): 
+@app.route("/getVideo/<int:num_steps>/<int:random>")
+def get_video(num_steps, random): 
+    try: 
+        os.remove("video.mov")
+    except Exception: 
+        pass 
+    
+
     image_noises = [torch.randn(1, 100, 1, 1) for i in range(2)]
+    print(image_noises)
     mix_in = (image_noises[1] - image_noises[0]) / num_steps 
 
     print(generator(image_noises[0]).shape)
