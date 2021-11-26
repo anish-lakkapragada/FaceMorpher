@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "App.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n  let playbackRate = 1; \n</script>\n\n\n<div class = \"content\"> \n  <h1> Random Face Interpolation </h1>\n  <video id=\"video-display\" src = \"https://sour-dragonfly-60.loca.lt/getVideo/20\" controls> </video>\n  <br> \n\n</div>  \n\n\n<style>\n\n  .content {\n    text-align: center;\n  }\n\n  #video-display {\n    width: 20rem; \n  }\n \n</style>\n"
+  ],
+  "names": [],
+  "mappings": "AAeE,QAAQ,cAAC,CAAC,AACR,UAAU,CAAE,MAAM,AACpB,CAAC,AAED,cAAc,cAAC,CAAC,AACd,KAAK,CAAE,KAAK,AACd,CAAC"
+}
