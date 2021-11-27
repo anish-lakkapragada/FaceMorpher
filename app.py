@@ -25,9 +25,10 @@ generator = Generator(params)
 generator.load_state_dict(models['generator'])
 
 # got the model loaded!
+# svelte 
 
 @app.route("/")
-def base(): return "dankit" 
+def base(): return "vim is dumb" 
 
 @app.route("/getVideo/<int:num_steps>/<int:random>")
 def get_video(num_steps, random): 
