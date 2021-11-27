@@ -5,7 +5,7 @@
     "App.svelte"
   ],
   "sourcesContent": [
-    "<script>\n  let playbackRate = 1; \n</script>\n\n\n<head> \n  <meta http-equiv=\"Cache-Control\" content=\"no-cache, no-store, must-revalidate\" />\n  <meta http-equiv=\"Pragma\" content=\"no-cache\" />\n  <meta http-equiv=\"Expires\" content=\"0\" />\n  <div class = \"content\"> \n</head> \n\n<div class = \"content\">\n  <h1> Random Face Interpolation </h1>\n  <video id=\"video-display\" src = {`https://sour-dragonfly-60.loca.lt/getVideo/20/${new Date().getTime()}`} controls> </video>\n  <br> \n</div>  \n\n\n<style>\n\n  .content {\n    text-align: center;\n  }\n\n  #video-display {\n    width: 20rem; \n  }\n \n</style>\n"
+    "<script>\n  let playbackRate = 1; \n</script>\n\n\n<head> \n  <meta http-equiv=\"Cache-Control\" content=\"no-cache, no-store, must-revalidate\" />\n  <meta http-equiv=\"Pragma\" content=\"no-cache\" />\n  <meta http-equiv=\"Expires\" content=\"0\" />\n  <div class = \"content\"> \n</head> \n\n<div class = \"content\">\n  <h1> Random Face Interpolation </h1>\n  <video id=\"video-display\" src = {`https://kind-pug-13.loca.lt/getVideo/20/${new Date().getTime()}`} controls> </video>\n  <br> \n</div>  \n\n\n<style>\n\n  .content {\n    text-align: center;\n  }\n\n  #video-display {\n    width: 20rem; \n  }\n \n</style>\n"
   ],
   "names": [],
   "mappings": "AAqBE,QAAQ,cAAC,CAAC,AACR,UAAU,CAAE,MAAM,AACpB,CAAC,AAED,cAAc,cAAC,CAAC,AACd,KAAK,CAAE,KAAK,AACd,CAAC"
