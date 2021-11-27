@@ -12,7 +12,7 @@
 
 <div class = "content">
   <h1> Random Face Interpolation </h1>
-  <video id="video-display" src = {`SECRETS.API_DOMAIN/getVideo/20/${new Date().getTime()}`} controls> </video>
+  <video id="video-display" src = {`secrets.API_DOMAIN/getVideo/20/${new Date().getTime()}`} controls> </video>
   <br> 
 </div>  
 
