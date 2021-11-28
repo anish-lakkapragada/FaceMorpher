@@ -2,3 +2,7 @@
 /public/build/
 /__pycache__/
 .DS_Store
+*.pt
+api/dnnlib
+api/torch_utils
+*.pkl
