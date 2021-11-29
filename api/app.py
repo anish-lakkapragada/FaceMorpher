@@ -1,6 +1,7 @@
-from flask import Flask, send_file, request, after_this_request
+from flask import Flask, send_file, request, after_this_request, send_from_directory
 import os 
 import random, time 
+from multiprocessing import Process
 
 """
 When a request is received, pull a random video from the
@@ -17,7 +18,7 @@ STYLEGAN2_VIDEO_NAME_REMOVED = None
 
 def video_file(model_type): 
     model_files = os.listdir("videos/" + model_type)
-    if (len(model_files) == 0): 
+    if len(model_files) == 0: 
         # create a model file 
         os.system(f"python3.8 create_video.py {model_type}")
     
@@ -31,35 +32,43 @@ def clean_and_create_model(model_type, file_name):
     print("done cleaning and creating!")
     return 
 
+def rm(path):
+    os.remove(path)
+
+def background_remove(path):
+    task = Process(target=rm(path))
+    task.start()
+
 @app.route("/")
 def base(): return "vim is fun"
 
 @app.get("/dcgan")
 def dcgan_video(): 
     video_file_name = video_file("dcgan")
-    @after_this_request 
-    def clean_and_create(response): 
+    @app.after_request
+    def delete(response):
         clean_and_create_model("dcgan", video_file_name)
-        return response
-    return send_file(video_file_name)
+        return response 
+    return send_from_directory(video_file_name, as_attachment=True)
 
 @app.get("/stylegan2")
 def stylegan2_video(): 
     video_file_name = video_file("stylegan2")
-    @after_this_request 
-    def clean_and_create(response): 
+    @app.after_request
+    def delete(response):
         clean_and_create_model("stylegan2", video_file_name)
         return response 
-    return send_file(video_file_name)
+    return send_from_directory(video_file_name, as_attachment=True)
 
 @app.get("/stylegan")
 def stylegan_video(): 
     video_file_name = video_file("stylegan")
-    @after_this_request 
-    def clean_and_create(response): 
+    print("got it here : ", video_file_name)
+    @app.after_request
+    def delete(response):
         clean_and_create_model("stylegan", video_file_name)
-        return response
-    return send_file(video_file_name)
+        return response 
+    return send_file(video_file_name, as_attachment = True)
 
 if __name__ == "__main__": 
     app.run() 
