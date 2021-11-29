@@ -6,4 +6,3 @@
 api/dnnlib
 api/torch_utils
 *.pkl
-*.mov
