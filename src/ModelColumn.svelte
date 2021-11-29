@@ -6,8 +6,11 @@
 </script>
 
 <div class="divvy"> 
-    <h2> {modelName} </h2>
-    <ChooseModelButton id={id} text={buttonText}></ChooseModelButton>
+    <div style="display: flex; flex-direction: column;"> 
+        <h2> {modelName} </h2>
+        
+        <ChooseModelButton id={id} text={buttonText}></ChooseModelButton>
+    </div>
 </div>
 
 <style> 

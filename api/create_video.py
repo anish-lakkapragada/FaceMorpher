@@ -8,9 +8,9 @@ import imageio
 import os
 from load_models import load_dcgan, load_stylegan, load_stylegan2
 
-max_dcgan_num = max([int(file_name[:file_name.index(".")]) for file_name in os.listdir("videos/dcgan")])
-max_stylegan_num = max([int(file_name[:file_name.index(".")]) for file_name in os.listdir("videos/stylegan")])
-max_stylegan2_num = max([int(file_name[:file_name.index(".")]) for file_name in os.listdir("videos/stylegan2")])
+max_dcgan_num = max([int(file_name[:file_name.index(".")]) for file_name in os.listdir("videos/dcgan")] + [0])
+max_stylegan_num = max([int(file_name[:file_name.index(".")]) for file_name in os.listdir("videos/stylegan")] + [0])
+max_stylegan2_num = max([int(file_name[:file_name.index(".")]) for file_name in os.listdir("videos/stylegan2")] + [0])
 
 VIDEO_NUM = max([max_dcgan_num, max_stylegan_num, max_stylegan2_num])
 
@@ -49,6 +49,7 @@ generators = {"dcgan": load_dcgan(), "stylegan": load_stylegan(), "stylegan2": l
 # read in the arguments
 import sys 
 model_type = sys.argv[1]
+print("running this dank")
 make_video(model_type, generators[model_type], latent_feed_functions[model_type], latent_sizes[model_type])
 
 # this creates the video.

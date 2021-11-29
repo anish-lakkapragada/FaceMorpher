@@ -1,7 +1,9 @@
-from flask import Flask, send_file, request, after_this_request, send_from_directory
+from flask import Flask, send_file, request, after_this_request, current_app
 import os 
 import random, time 
 from multiprocessing import Process
+from threading import Thread
+import subprocess
 
 """
 When a request is received, pull a random video from the
@@ -13,6 +15,7 @@ If there are currently no videos in that pool, generate one as well!
 
 app = Flask(__name__)
 
+import os 
 def video_file(model_type): 
     model_files = os.listdir("videos/" + model_type)
     if len(model_files) == 0: 
@@ -23,11 +26,16 @@ def video_file(model_type):
     
     return f"videos/{model_type}/{model_video_file}"
 
+"""
 def clean_and_create_model(model_type, file_name): 
     os.remove(file_name) 
     os.system(f"python3.8 create_video.py {model_type}")
     print("done cleaning and creating!")
     return 
+"""
+
+def create_video(model): 
+    os.system(f"python3.8 create_video.py {model}")
 
 @app.route("/")
 def base(): return "vim is fun"
@@ -40,8 +48,11 @@ def dcgan_video():
         try:
             os.remove(video_file_name)
             #video_file_name.close()
+            thread = Thread(target=create_video, kwargs={"model": "stylegan"})
+            thread.start()
         except Exception as error:
             app.logger.error("Error removing or closing downloaded file handle", error)
+
         return response
     return send_file(video_file_name, as_attachment=True)
 
@@ -53,8 +64,11 @@ def stylegan2_video():
         try:
             os.remove(video_file_name)
             #video_file_name.close()
+            thread = Thread(target=create_video, kwargs={"model": "stylegan"})
+            thread.start()
         except Exception as error:
             app.logger.error("Error removing or closing downloaded file handle", error)
+
         return response
     return send_file(video_file_name, as_attachment = True)
 
@@ -62,13 +76,17 @@ def stylegan2_video():
 def stylegan_video(): 
     video_file_name = video_file("stylegan")
     print("got it here : ", video_file_name)
+
     @after_this_request
     def remove_file(response):
         try:
             os.remove(video_file_name)
             #video_file_name.close()
+            thread = Thread(target=create_video, kwargs={"model": "stylegan"})
+            thread.start()
         except Exception as error:
             app.logger.error("Error removing or closing downloaded file handle", error)
+
         return response
     return send_file(video_file_name, as_attachment = True)
 
