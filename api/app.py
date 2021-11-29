@@ -12,9 +12,6 @@ If there are currently no videos in that pool, generate one as well!
 """
 
 app = Flask(__name__)
-DCGAN_VIDEO_NAME_REMOVED = None 
-STYLEGAN_VIDEO_NAME_REMOVED = None
-STYLEGAN2_VIDEO_NAME_REMOVED = None 
 
 def video_file(model_type): 
     model_files = os.listdir("videos/" + model_type)
@@ -32,42 +29,47 @@ def clean_and_create_model(model_type, file_name):
     print("done cleaning and creating!")
     return 
 
-def rm(path):
-    os.remove(path)
-
-def background_remove(path):
-    task = Process(target=rm(path))
-    task.start()
-
 @app.route("/")
 def base(): return "vim is fun"
 
 @app.get("/dcgan")
 def dcgan_video(): 
     video_file_name = video_file("dcgan")
-    @app.after_request
-    def delete(response):
-        clean_and_create_model("dcgan", video_file_name)
-        return response 
-    return send_from_directory(video_file_name, as_attachment=True)
+    @after_this_request
+    def remove_file(response):
+        try:
+            os.remove(video_file_name)
+            #video_file_name.close()
+        except Exception as error:
+            app.logger.error("Error removing or closing downloaded file handle", error)
+        return response
+    return send_file(video_file_name, as_attachment=True)
 
 @app.get("/stylegan2")
 def stylegan2_video(): 
     video_file_name = video_file("stylegan2")
-    @app.after_request
-    def delete(response):
-        clean_and_create_model("stylegan2", video_file_name)
-        return response 
-    return send_from_directory(video_file_name, as_attachment=True)
+    @after_this_request
+    def remove_file(response):
+        try:
+            os.remove(video_file_name)
+            #video_file_name.close()
+        except Exception as error:
+            app.logger.error("Error removing or closing downloaded file handle", error)
+        return response
+    return send_file(video_file_name, as_attachment = True)
 
 @app.get("/stylegan")
 def stylegan_video(): 
     video_file_name = video_file("stylegan")
     print("got it here : ", video_file_name)
-    @app.after_request
-    def delete(response):
-        clean_and_create_model("stylegan", video_file_name)
-        return response 
+    @after_this_request
+    def remove_file(response):
+        try:
+            os.remove(video_file_name)
+            #video_file_name.close()
+        except Exception as error:
+            app.logger.error("Error removing or closing downloaded file handle", error)
+        return response
     return send_file(video_file_name, as_attachment = True)
 
 if __name__ == "__main__": 

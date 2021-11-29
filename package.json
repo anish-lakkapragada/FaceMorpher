@@ -4,19 +4,27 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.0.0",
+    "autoprefixer": "^10.4.0",
     "eslint": "^7.32.0",
+    "node-sass": "^6.0.1",
     "nollup": "^0.13.13",
+    "postcss": "^8.4.4",
     "rollup": "^2.3.4",
     "rollup-plugin-hot": "^0.1.0",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte-hot": "^0.13.0",
     "rollup-plugin-terser": "^7.0.0",
-    "svelte": "^3.0.0"
+    "sass": "^1.43.5",
+    "smui-theme": "^6.0.0-beta.4",
+    "svelte": "^3.0.0",
+    "svelte-preprocess": "^4.9.8"
   },
-  "dependencies": {
+  "dependencie": {
+    "@material/button": "^13.0.0",
     "dotenv": "^10.0.0",
     "eslint-plugin-svelte3": "^3.2.0",
-    "sirv-cli": "^1.0.0"
+    "sirv-cli": "^1.0.0",
+    "smelte": "^1.1.8"
   },
   "scripts": {
     "build": "rollup -c",
@@ -26,5 +34,9 @@
     "dev": "npm run dev:nollup",
     "start": "sirv public",
     "format": "eslint --fix ."
+  },
+  "dependencies": {
+    "@material/button": "^13.0.0",
+    "@material/data-table": "^13.0.0"
   }
 }

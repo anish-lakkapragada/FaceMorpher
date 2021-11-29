@@ -1,5 +1,7 @@
 <script>
-  // function whenever new video is requested 
+  
+  import ChooseModelButton from "./ChooseModelButton.svelte";
+  import ModelColumn from "./ModelColumn.svelte";
 
   const update = () => {
     let video = document.createElement("video");
@@ -26,32 +28,30 @@
 
 <div class = "content" id = "dank">
   <h1> Face Morph "Interpolation" </h1>
-  <p> Below is a video of an <em> interpolation </em> between generated faces (by DCGAN). 
-    It basically shows what happens as the latent space vector of the original image goes in the direction of the second image. </p>
+
+  <!-- add columns here-->
+
+  <div class="model-columns"> 
     
-  <h4> Click the button to get a new interpolation! </h4>
-  <button type="button" on:click={update}> Get New Face Morph </button>
-  <br> 
-  
+    <ModelColumn class="model" modelName="DCGAN (2017)" id="dcgan" buttonText="Get a new Interpolation"/>
+    <ModelColumn class="model" modelName="StyleGAN 2 (2020)" id="stylegan2"/>
+    <ModelColumn class="model" modelName="StyleGAN (2019)" id="stylegan"/>
 
-
+  </div>
 </div>  
 
-
-<style>
-
+<style global lang='scss'> 
+  @use "@material/button/styles";
+  @use "@material/data-table/data-table";
   .content {
-    text-align: center;
-    margin-right: 20rem; 
-    margin-left: 20rem; 
+    text-align: center; 
   }
 
-  p {
-    font-size: 1.25rem;
-  }
-
-  h4 {
-    font-size: 1.5rem;
+  .model-columns {
+    column-width: 10em; 
+    column-count: 3;  
+    column-rule: 1px solid grey;
+    column-gap: 5em; 
   }
 
 </style>

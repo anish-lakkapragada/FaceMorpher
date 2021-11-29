@@ -4,9 +4,9 @@ import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import hmr from 'rollup-plugin-hot';
-import dotenv from 'dotenv';
+// to allow matieral to work 
+import sveltePreprocess from "svelte-preprocess";
 
-dotenv.config();
 
 // Set this to true to pass the --single flag to sirv (this serves your
 // index.html for any unmatched route, which is a requirement for SPA
@@ -88,6 +88,14 @@ export default {
         //
         // https://github.com/rixo/rollup-plugin-svelte-hot#usage
       },
+      preprocess: [
+        sveltePreprocess({
+          sourcemap: !isProduction, 
+          postcss: {
+            plugins: [require("autoprefixer")]
+          }
+        }),
+      ]
     }),
 
     // If you have external dependencies installed from
