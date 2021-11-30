@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@material/button": "^13.0.0",
-    "@material/data-table": "^13.0.0"
+    "@material/data-table": "^13.0.0",
+    "material": "^0.4.3"
   }
 }
