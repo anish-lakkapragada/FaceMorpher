@@ -1,9 +1,10 @@
 from flask import Flask, send_file, request, after_this_request, current_app
+from flask_cors import CORS, cross_origin
 import os 
 import random, time 
 from multiprocessing import Process
 from threading import Thread
-import subprocess
+import shutil 
 
 """
 When a request is received, pull a random video from the
@@ -14,6 +15,9 @@ If there are currently no videos in that pool, generate one as well!
 """
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+cors = CORS(app, resources={r"/dcgan": {"origins": "http://localhost:5000"}, r"/stylegan2": {"origins": "http://localhost:5000"}, r"/stylegan": {"origins": "http://localhost:5000"}})
 
 import os 
 def video_file(model_type): 
@@ -38,57 +42,45 @@ def create_video(model):
     os.system(f"python3.8 create_video.py {model}")
 
 @app.route("/")
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def base(): return "vim is fun"
 
 @app.get("/dcgan")
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def dcgan_video(): 
     video_file_name = video_file("dcgan")
-    @after_this_request
-    def remove_file(response):
-        try:
-            os.remove(video_file_name)
-            #video_file_name.close()
-            thread = Thread(target=create_video, kwargs={"model": "stylegan"})
-            thread.start()
-        except Exception as error:
-            app.logger.error("Error removing or closing downloaded file handle", error)
+    new_path = "../public/serve/dcgan"
+    # delete all videos from here 
+    shutil.rmtree(new_path)
+    os.mkdir(new_path) # clear all 
 
-        return response
-    return send_file(video_file_name, as_attachment=True)
+    shutil.move(video_file_name, new_path)
+    return os.listdir(new_path)[0]
 
 @app.get("/stylegan2")
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def stylegan2_video(): 
     video_file_name = video_file("stylegan2")
-    @after_this_request
-    def remove_file(response):
-        try:
-            os.remove(video_file_name)
-            #video_file_name.close()
-            thread = Thread(target=create_video, kwargs={"model": "stylegan"})
-            thread.start()
-        except Exception as error:
-            app.logger.error("Error removing or closing downloaded file handle", error)
+    new_path = "../public/serve/stylegan2"
+    # delete all videos from here 
+    shutil.rmtree(new_path)
+    os.mkdir(new_path) # clear all 
 
-        return response
-    return send_file(video_file_name, as_attachment = True)
+    shutil.move(video_file_name, new_path)
+    return os.listdir(new_path)[0]
 
 @app.get("/stylegan")
+@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def stylegan_video(): 
     video_file_name = video_file("stylegan")
-    print("got it here : ", video_file_name)
+    
+    new_path = "../public/serve/stylegan"
+    # delete all videos from here 
+    shutil.rmtree(new_path)
+    os.mkdir(new_path) # clear all 
 
-    @after_this_request
-    def remove_file(response):
-        try:
-            os.remove(video_file_name)
-            #video_file_name.close()
-            thread = Thread(target=create_video, kwargs={"model": "stylegan"})
-            thread.start()
-        except Exception as error:
-            app.logger.error("Error removing or closing downloaded file handle", error)
-
-        return response
-    return send_file(video_file_name, as_attachment = True)
+    shutil.move(video_file_name, new_path)
+    return os.listdir(new_path)[0]
 
 if __name__ == "__main__": 
     app.run() 
