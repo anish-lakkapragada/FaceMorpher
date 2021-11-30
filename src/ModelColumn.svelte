@@ -6,7 +6,7 @@
     let video_path; 
     fetch(`https://face-morpher-api.loca.lt/${id}`).then(response => response.text()).then((response) => {
         console.log("this is response : " + response); 
-        video_path = `serve/${id}/` + response; 
+        video_path = `/serve/${id}/` + response; 
         console.log(`this is video_path : ${video_path}`)
     }) 
 </script>
@@ -19,10 +19,7 @@
         
         <!-- have a video here, maybe actually describe how the model works as -->
 
-        <video controls name="Video Name">
-            <source src={video_path}>
-            <track kind="captions"> 
-          </video>
+        <video id="video-elem" src={video_path} controls> </video>  
 
     </div>
 </div>
@@ -30,5 +27,9 @@
 <style> 
     *{
     margin-top: 0; 
+    }
+
+    #video-elem {
+        width: 40rem; 
     }
 </style>
