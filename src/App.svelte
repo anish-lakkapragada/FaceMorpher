@@ -48,10 +48,10 @@
       />
     </div>
     <div>
-      <ModelColumn class="model" modelName="StyleGAN 2 (2020)" id="stylegan2" />
+      <ModelColumn class="model" modelName="StyleGAN 2 (2020)" id="stylegan2" buttonText="Get a new Interpolation" />
     </div>
     <div>
-      <ModelColumn class="model" modelName="StyleGAN (2019)" id="stylegan" />
+      <ModelColumn class="model" modelName="StyleGAN (2019)" id="stylegan" buttonText="Get a new Interpolation"/>
     </div>
   </div>
 </div>

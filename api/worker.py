@@ -25,7 +25,7 @@ def create_video(type_model, generator, latent_feed_function, latent_size, num_s
         image = latent_feed_function(generator, new_noise)
         IMAGES.append(image)
     
-    imageio.mimsave("videos/" + type_model + f"/{str(VIDEO_NUM)}.mov", IMAGES)
+    imageio.mimsave("videos/" + type_model + f"/{str(VIDEO_NUM)}.mp4", IMAGES)
     VIDEO_NUM += 1
 
 def style_gan_feed_function(generator, latent): 

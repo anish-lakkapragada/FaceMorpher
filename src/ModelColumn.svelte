@@ -19,8 +19,9 @@
         
         <!-- have a video here, maybe actually describe how the model works as -->
 
-        <video controls="controls" width="800" height="600" name="Video Name">
+        <video controls name="Video Name">
             <source src={video_path}>
+            <track kind="captions"> 
           </video>
 
     </div>

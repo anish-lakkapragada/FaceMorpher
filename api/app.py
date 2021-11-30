@@ -17,7 +17,7 @@ If there are currently no videos in that pool, generate one as well!
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-cors = CORS(app, resources={r"/dcgan": {"origins": "http://localhost:5000"}, r"/stylegan2": {"origins": "http://localhost:5000"}, r"/stylegan": {"origins": "http://localhost:5000"}})
+cors = CORS(app, resources={r"/dcgan": {"origins": "*"}, r"/stylegan2": {"origins": "*"}, r"/stylegan": {"origins": "*"}})
 
 import os 
 def video_file(model_type): 
@@ -42,11 +42,11 @@ def create_video(model):
     os.system(f"python3.8 create_video.py {model}")
 
 @app.route("/")
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+@cross_origin(origin='*',headers=['Content- Type','Authorization'])
 def base(): return "vim is fun"
 
 @app.get("/dcgan")
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+@cross_origin(origin='*',headers=['Content- Type','Authorization'])
 def dcgan_video(): 
     video_file_name = video_file("dcgan")
     new_path = "../public/serve/dcgan"
@@ -58,7 +58,7 @@ def dcgan_video():
     return os.listdir(new_path)[0]
 
 @app.get("/stylegan2")
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+@cross_origin(origin='*',headers=['Content- Type','Authorization'])
 def stylegan2_video(): 
     video_file_name = video_file("stylegan2")
     new_path = "../public/serve/stylegan2"
@@ -70,7 +70,7 @@ def stylegan2_video():
     return os.listdir(new_path)[0]
 
 @app.get("/stylegan")
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
+@cross_origin(origin='*',headers=['Content- Type','Authorization'])
 def stylegan_video(): 
     video_file_name = video_file("stylegan")
     
