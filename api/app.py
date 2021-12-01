@@ -87,5 +87,10 @@ def stylegan_video():
     shutil.move(video_file_name, new_path)
     return os.listdir(new_path)[0]
 
+@app.get("/serve/<model_type>/<video_name>")
+@cross_origin(**api_v1_cors_config)
+def give_video(model_type, video_name): 
+    return send_file(f"../public/serve/{model_type}/{video_name}", as_attachment=True)
+    
 if __name__ == "__main__": 
     app.run() 
