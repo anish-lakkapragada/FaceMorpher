@@ -5,11 +5,24 @@ Script to continously generate videos. Saves them in the appropriate videos/ dir
 import torch
 import math, random
 import imageio 
-import os
+import os, boto3
 from load_models import load_dcgan, load_stylegan, load_stylegan2
+from boto3.s3.transfer import S3Transfer
+import boto3
 
-NUM_MAX_VIDEOS = 50
+from keys import SAK, AK
+
+NUM_MAX_VIDEOS = 200
 VIDEO_NUM = 60
+
+access_key_id = AK
+secret_access_key = SAK
+
+print(access_key_id, secret_access_key)
+
+s3 = boto3.client("s3", aws_access_key_id=access_key_id, 
+                        aws_secret_access_key=secret_access_key)
+
 def create_video(type_model, generator, latent_feed_function, latent_size, num_steps=20): 
     global VIDEO_NUM
     if type_model == "dcgan": 
@@ -25,7 +38,12 @@ def create_video(type_model, generator, latent_feed_function, latent_size, num_s
         image = latent_feed_function(generator, new_noise)
         IMAGES.append(image)
     
-    imageio.mimsave("videos/" + type_model + f"/{str(VIDEO_NUM)}.mp4", IMAGES)
+    FILE_PATH ="videos/" + type_model + f"/{str(VIDEO_NUM)}.mp4"
+    imageio.mimsave(FILE_PATH, IMAGES)
+
+    # save to bucket 
+    s3.upload_file(FILE_PATH, "face-morpher-videos", f"{type_model}/{str(VIDEO_NUM)}.mp4")
+
     VIDEO_NUM += 1
 
 def style_gan_feed_function(generator, latent): 

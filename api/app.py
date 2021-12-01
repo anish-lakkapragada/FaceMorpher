@@ -35,13 +35,6 @@ def video_file(model_type):
     
     return f"videos/{model_type}/{model_video_file}"
 
-"""
-def clean_and_create_model(model_type, file_name): 
-    os.remove(file_name) 
-    os.system(f"python3.8 create_video.py {model_type}")
-    print("done cleaning and creating!")
-    return 
-"""
 
 def create_video(model): 
     os.system(f"python3.8 create_video.py {model}")
