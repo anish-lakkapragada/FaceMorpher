@@ -5,14 +5,23 @@ import random, time
 from multiprocessing import Process
 from threading import Thread
 import shutil 
+import boto3
 
-"""
-When a request is received, pull a random video from the
-videos directory, and return it back. Then run create_video.py again to create a video 
-for whichever type is gone now. 
 
-If there are currently no videos in that pool, generate one as well!
-"""
+# set up S3 
+
+from keys import SAK, AK
+
+access_key_id = AK
+secret_access_key = SAK
+
+s3 = boto3.resource("s3", aws_access_key_id=access_key_id, 
+                        aws_secret_access_key=secret_access_key)
+
+face_morpher_video_bucket = s3.Bucket('face-morpher-videos')
+serve_video_bucket = s3.Bucket("serve-morpher")
+location = boto3.client('s3', aws_access_key_id=access_key_id,aws_secret_access_key=secret_access_key).get_bucket_location(Bucket="serve-morpher")['LocationConstraint']
+
 
 app = Flask(__name__)
 api_v1_cors_config = {
@@ -26,14 +35,25 @@ CORS(app, resources={r"/*" : api_v1_cors_config})
 
 import os 
 def video_file(model_type): 
-    model_files = os.listdir("videos/" + model_type)
-    if len(model_files) == 0: 
-        # create a model file 
-        os.system(f"python3.8 create_video.py {model_type}")
+    """give back a random file from the s3 bucket 
+    and transfer it to serve/ bucket and return file name"""
     
-    model_video_file = random.choice(os.listdir(f"videos/{model_type}"))
+    # get random file name 
+    random_file_name = random.choice([obj.key for obj in face_morpher_video_bucket.objects.filter(Prefix=model_type)])
+
+    copy_source = {
+        'Bucket': 'face-morpher-videos',
+        'Key': random_file_name
+    }
+
+    # puut this in the serve-morpher directory 
+    s3.meta.client.copy(copy_source, 'serve-morpher', random_file_name)
     
-    return f"videos/{model_type}/{model_video_file}"
+    # delete this from the face-morpher-videos bucket 
+    s3.Object('face-morpher-videos', random_file_name).delete()
+
+    return random_file_name
+    
 
 
 def create_video(model): 
@@ -47,43 +67,21 @@ def base(): return "vim is fun"
 @cross_origin(**api_v1_cors_config)
 def dcgan_video(): 
     video_file_name = video_file("dcgan")
-    new_path = "../public/serve/dcgan"
-    # delete all videos from here 
-    shutil.rmtree(new_path)
-    os.mkdir(new_path) # clear all 
-
-    shutil.move(video_file_name, new_path)
-    return os.listdir(new_path)[0]
+    return "https://s3-%s.amazonaws.com/%s/%s" % (location, "serve-morpher", video_file_name)
 
 @app.get("/stylegan2")
 @cross_origin(**api_v1_cors_config)
 def stylegan2_video(): 
     video_file_name = video_file("stylegan2")
-    new_path = "../public/serve/stylegan2"
-    # delete all videos from here 
-    shutil.rmtree(new_path)
-    os.mkdir(new_path) # clear all 
-
-    shutil.move(video_file_name, new_path)
-    return os.listdir(new_path)[0]
+    return "https://s3-%s.amazonaws.com/%s/%s" % (location, "serve-morpher", video_file_name)
 
 @app.get("/stylegan")
 @cross_origin(**api_v1_cors_config)
 def stylegan_video(): 
     video_file_name = video_file("stylegan")
     
-    new_path = "../public/serve/stylegan"
-    # delete all videos from here 
-    shutil.rmtree(new_path)
-    os.mkdir(new_path) # clear all 
-
-    shutil.move(video_file_name, new_path)
-    return os.listdir(new_path)[0]
-
-@app.get("/serve/<model_type>/<video_name>")
-@cross_origin(**api_v1_cors_config)
-def give_video(model_type, video_name): 
-    return send_file(f"../public/serve/{model_type}/{video_name}", as_attachment=True)
+    # got it from here, just send the file 
+    return "https://s3-%s.amazonaws.com/%s/%s" % (location, "serve-morpher", video_file_name)
     
 if __name__ == "__main__": 
     app.run() 

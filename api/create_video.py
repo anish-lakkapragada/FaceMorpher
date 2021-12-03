@@ -7,7 +7,17 @@ import math, random
 import imageio 
 import os
 from load_models import load_dcgan, load_stylegan, load_stylegan2
+from boto3.s3.transfer import S3Transfer
+import boto3
 
+from keys import SAK, AK
+
+access_key_id = AK
+secret_access_key = SAK
+
+s3 = boto3.client("s3", aws_access_key_id=access_key_id, 
+                        aws_secret_access_key=secret_access_key)
+                        
 max_dcgan_num = max([int(file_name[:file_name.index(".")]) for file_name in os.listdir("videos/dcgan")] + [0])
 max_stylegan_num = max([int(file_name[:file_name.index(".")]) for file_name in os.listdir("videos/stylegan")] + [0])
 max_stylegan2_num = max([int(file_name[:file_name.index(".")]) for file_name in os.listdir("videos/stylegan2")] + [0])
@@ -29,7 +39,11 @@ def make_video(type_model, generator, latent_feed_function, latent_size, num_ste
         image = latent_feed_function(generator, new_noise)
         IMAGES.append(image)
     
-    imageio.mimsave("videos/" + type_model + f"/{str(VIDEO_NUM)}.mp4", IMAGES)
+    FILE_PATH ="videos/" + type_model + f"/{str(VIDEO_NUM)}.mp4"
+    imageio.mimsave(FILE_PATH, IMAGES)
+
+    # save to bucket 
+    s3.upload_file(FILE_PATH, "face-morpher-videos", f"{type_model}/{str(VIDEO_NUM)}.mp4")
 
 def style_gan_feed_function(generator, latent): 
     return generator(latent).squeeze(0).permute(1, 2, 0).detach().numpy()

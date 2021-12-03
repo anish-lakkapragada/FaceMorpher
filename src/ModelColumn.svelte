@@ -8,7 +8,7 @@
     function update() {
         fetch(`https://face-morpher-api.loca.lt/${id}`).then(response => response.text()).then((response) => {
             console.log("this is response : " + response); 
-            video_path = `https://face-morpher-api.loca.lt/serve/${id}/` + response; 
+            video_path = response; 
         }) 
     }
 
@@ -23,7 +23,7 @@
         
         <!-- have a video here, maybe actually describe how the model works as -->
 
-        <video id="video-elem" src={video_path} controls> </video>  
+        <video id="video-elem" src={video_path} controls> </video>
 
     </div>
 </div>
