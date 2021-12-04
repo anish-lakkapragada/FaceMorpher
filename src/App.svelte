@@ -1,26 +1,6 @@
 <script>
   import ChooseModelButton from "./ChooseModelButton.svelte";
   import ModelColumn from "./ModelColumn.svelte";
-
-  const update = () => {
-    let video = document.createElement("video");
-    video.src = `https://young-horse-68.loca.lt/getVideo/20/${new Date().getTime()}`;
-    video.style.width = "20rem";
-    video.controls = true;
-    for (
-      let i = 0;
-      i < document.getElementById("dank").childNodes.length;
-      i++
-    ) {
-      if (document.getElementById("dank").childNodes[i].tagName == "VIDEO") {
-        document
-          .getElementById("dank")
-          .removeChild(document.getElementById("dank").childNodes[i]);
-      }
-    }
-
-    document.getElementById("dank").appendChild(video);
-  };
 </script>
 
 <head>

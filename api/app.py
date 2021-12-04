@@ -1,5 +1,6 @@
 from flask import Flask, send_file, request, after_this_request, current_app
 from flask_cors import CORS, cross_origin
+from pathlib import Path
 import os 
 import random, time 
 from multiprocessing import Process
@@ -22,8 +23,9 @@ face_morpher_video_bucket = s3.Bucket('face-morpher-videos')
 serve_video_bucket = s3.Bucket("serve-morpher")
 location = boto3.client('s3', aws_access_key_id=access_key_id,aws_secret_access_key=secret_access_key).get_bucket_location(Bucket="serve-morpher")['LocationConstraint']
 
+svelte_app = str(Path(__file__).parent / "../public")
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="", static_folder=svelte_app)
 api_v1_cors_config = {
     "origins": ["*"], 
     "methods": ["OPTIONS", 'GET', 'POST'], 
@@ -54,14 +56,14 @@ def video_file(model_type):
 
     return random_file_name
     
-
-
 def create_video(model): 
     os.system(f"python3.8 create_video.py {model}")
 
 @app.route("/")
 @cross_origin(**api_v1_cors_config)
-def base(): return "vim is fun"
+def base():
+    with open(Path(svelte_app) / "index.html", "r") as fin:
+        return fin.read()
 
 @app.get("/dcgan")
 @cross_origin(**api_v1_cors_config)

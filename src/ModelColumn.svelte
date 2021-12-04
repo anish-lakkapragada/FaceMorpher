@@ -6,7 +6,7 @@
     let video_path; 
 
     function update() {
-        fetch(`https://face-morpher-api.loca.lt/${id}`).then(response => response.text()).then((response) => {
+        fetch(`/${id}`).then(response => response.text()).then((response) => {
             console.log("this is response : " + response); 
             video_path = response; 
         }) 
