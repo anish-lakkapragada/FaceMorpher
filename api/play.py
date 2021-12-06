@@ -43,6 +43,8 @@ key = "100.mp4"
 
 s3 = boto3.resource('s3', aws_access_key_id=access_key_id,aws_secret_access_key=secret_access_key)
 
+s3.Object('face-morpher-videos', "stylegan/100.mp4").delete()
+
 bucket = s3.Bucket(bucket_name)
 location = boto3.client('s3', aws_access_key_id=access_key_id,aws_secret_access_key=secret_access_key).get_bucket_location(Bucket=bucket_name)['LocationConstraint']
 url = "https://s3-%s.amazonaws.com/%s/%s" % (location, bucket_name, key)
