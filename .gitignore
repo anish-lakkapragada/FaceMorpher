@@ -7,3 +7,4 @@ api/dnnlib
 api/torch_utils
 *.pkl
 api/keys.py
+serve_video_api/keys.py

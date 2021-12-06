@@ -1,6 +1,3 @@
 flask
-imageio
-torch
-numpy 
-os
-pickle
+flask_cors
+boto3
