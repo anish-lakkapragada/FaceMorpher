@@ -18,7 +18,7 @@
 
 <div class="divvy"> 
     <div style="display: flex; flex-direction: column;"> 
-        <h2> {modelName} </h2>
+        <h2 id ="modelName"> {modelName} </h2>
         
         <ChooseModelButton id={id} text={buttonText} onClickFunction={update}></ChooseModelButton> 
         <!-- have a video here, maybe actually describe how the model works as -->
@@ -31,6 +31,10 @@
 <style> 
     *{
     margin-top: 0; 
+    }
+
+    #modelName {
+        font-size: 1.5rem;
     }
 
     #video-elem {

@@ -48,7 +48,7 @@
   }
 
   #promo {
-    font-size: 2rem;
+    font-size: 3rem;
   }
   .content {
     text-align: center;
