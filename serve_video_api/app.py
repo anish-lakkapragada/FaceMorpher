@@ -82,13 +82,16 @@ def dcgan_video():
 @cross_origin(**api_v1_cors_config)
 def stylegan2_video(): 
     video_file_name = video_file("stylegan2")
+    thread = Thread(target=create_video, kwargs={"model" : "stylegan2"})
+    thread.start()
     return "https://s3-%s.amazonaws.com/%s/%s" % (location, "serve-morpher", video_file_name)
 
 @app.get("/stylegan")
 @cross_origin(**api_v1_cors_config)
 def stylegan_video(): 
     video_file_name = video_file("stylegan")
-    
+    thread = Thread(target=create_video, kwargs={"model" : "stylegan"})
+    thread.start()
     # got it from here, just send the file 
     return "https://s3-%s.amazonaws.com/%s/%s" % (location, "serve-morpher", video_file_name)
     
