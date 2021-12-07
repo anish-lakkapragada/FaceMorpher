@@ -16,7 +16,7 @@
 <div class="content" id="dank">
   <h1 id = "title">Face Morph Madness </h1>
 
-  <h2> You've seen the faces. Now watch them morph into each other. </h2>
+  <h2 id="promo"> You've seen the faces. Now watch them morph into each other. </h2>
 
   <div class="model-columns">
     <div>
@@ -45,6 +45,10 @@
   #title {
     font-size: 4rem; 
     font-family: "Bangers";
+  }
+
+  #promo {
+    font-size: 2rem;
   }
   .content {
     text-align: center;

@@ -3,8 +3,8 @@
 /__pycache__/
 .DS_Store
 *.pt
-api/dnnlib
-api/torch_utils
+ml-api/dnnlib
+ml-api/torch_utils
 *.pkl
-api/keys.py
+ml-api/keys.py
 serve_video_api/keys.py

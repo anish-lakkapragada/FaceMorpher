@@ -63,7 +63,11 @@ def video_file(model_type):
     return random_file_name
     
 def create_video(model): 
-    requests.get("https://face-morpher-ml-api.loca.lt/" + model)
+    requests.get("https://face-morpher-ml-api.loca.lt/" + model, headers={
+                "Access-Control-Request-Method": "GET",
+                "Origin": "*",
+                "Access-Control-Request-Headers": "Authorization",
+            })
 
 @app.route("/")
 @cross_origin(**api_v1_cors_config)
