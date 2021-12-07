@@ -14,9 +14,9 @@
 >
 
 <div class="content" id="dank">
-  <h1>Face Morph "Interpolation"</h1>
+  <h1 id = "title">Face Morph Madness </h1>
 
-  <!-- add columns here-->
+  <h2> You've seen the faces. Now watch them morph into each other. </h2>
 
   <div class="model-columns">
     <div>
@@ -39,6 +39,13 @@
 <style global lang="scss">
   @use "@material/button/styles";
   @use "@material/data-table/data-table";
+  @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+
+
+  #title {
+    font-size: 4rem; 
+    font-family: "Bangers";
+  }
   .content {
     text-align: center;
   }

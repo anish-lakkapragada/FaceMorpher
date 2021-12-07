@@ -21,13 +21,15 @@ s3 = boto3.resource("s3", aws_access_key_id=access_key_id,
 face_morpher_video_bucket = s3.Bucket('face-morpher-videos')
 serve_video_bucket = s3.Bucket("serve-morpher")
 
-#location = boto3.client('s3', aws_access_key_id=access_key_id,aws_secret_access_key=secret_access_key).get_bucket_location(Bucket="serve-morpher")['LocationConstraint']
-location="us-west-1"
-print("THIS IS LOCATION : " + location)
+location = boto3.client('s3', aws_access_key_id=access_key_id,aws_secret_access_key=secret_access_key).get_bucket_location(Bucket="serve-morpher")['LocationConstraint']
 
-svelte_app = str(Path(__file__).parent / "../public")
 
-app = Flask(__name__, static_url_path="", static_folder=svelte_app)
+#print("THIS IS LOCATION : " + location)
+#svelte_app = str(Path(__file__).parent / "../public")
+#app = Flask(__name__, static_url_path="", static_folder=svelte_app)
+
+app = Flask(__name__)
+
 api_v1_cors_config = {
     "origins": ["*"], 
     "methods": ["OPTIONS", 'GET', 'POST'], 
@@ -64,8 +66,7 @@ def create_video(model):
 @app.route("/")
 @cross_origin(**api_v1_cors_config)
 def base():
-    with open(Path(svelte_app) / "index.html", "r") as fin:
-        return fin.read()
+    return "default string"
 
 @app.get("/dcgan")
 @cross_origin(**api_v1_cors_config)
