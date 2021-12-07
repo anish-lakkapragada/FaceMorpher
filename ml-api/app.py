@@ -1,15 +1,16 @@
 from flask import Flask, send_file, request, after_this_request, current_app
 from flask_cors import CORS, cross_origin
 from pathlib import Path
-import requests
 import os 
 import random, time 
 #from multiprocessing import Process
-from threading import Thread
+#from threading import Thread
 #import shutil 
 import boto3
 
-# set up S3 
+"""
+API to generate a video when one is used. 
+"""
 
 from keys import SAK, AK
 
@@ -22,16 +23,10 @@ s3 = boto3.resource("s3", aws_access_key_id=access_key_id,
 face_morpher_video_bucket = s3.Bucket('face-morpher-videos')
 serve_video_bucket = s3.Bucket("serve-morpher")
 
-location = boto3.client('s3', aws_access_key_id=access_key_id,aws_secret_access_key=secret_access_key).get_bucket_location(Bucket="serve-morpher")['LocationConstraint']
-
-
-#print("THIS IS LOCATION : " + location)
-#svelte_app = str(Path(__file__).parent / "../public")
-#app = Flask(__name__, static_url_path="", static_folder=svelte_app)
+#location = boto3.client('s3', aws_access_key_id=access_key_id,aws_secret_access_key=secret_access_key).get_bucket_location(Bucket="serve-morpher")['LocationConstraint']
+location="us-west-1"
 
 app = Flask(__name__)
-
-
 api_v1_cors_config = {
     "origins": ["*"], 
     "methods": ["OPTIONS", 'GET', 'POST'], 
@@ -63,34 +58,31 @@ def video_file(model_type):
     return random_file_name
     
 def create_video(model): 
-    requests.get("https://face-morpher-ml-api.loca.lt/" + model)
+    os.system(f"python3.8 create_video.py {model}")
 
 @app.route("/")
 @cross_origin(**api_v1_cors_config)
 def base():
-    return "default string"
+    return "dank memer moment"
 
 @app.get("/dcgan")
 @cross_origin(**api_v1_cors_config)
 def dcgan_video(): 
-    video_file_name = video_file("dcgan")
-    thread = Thread(target=create_video, kwargs={"model" : "dcgan"})
-    thread.start() 
-    return "https://s3-%s.amazonaws.com/%s/%s" % (location, "serve-morpher", video_file_name)
+    # create a new dcgan video 
+    create_video("dcgan")
+    return "thanks"
 
 @app.get("/stylegan2")
 @cross_origin(**api_v1_cors_config)
 def stylegan2_video(): 
-    video_file_name = video_file("stylegan2")
-    return "https://s3-%s.amazonaws.com/%s/%s" % (location, "serve-morpher", video_file_name)
+    create_video("stylegan2")
+    return "thanks"
 
 @app.get("/stylegan")
 @cross_origin(**api_v1_cors_config)
 def stylegan_video(): 
-    video_file_name = video_file("stylegan")
-    
-    # got it from here, just send the file 
-    return "https://s3-%s.amazonaws.com/%s/%s" % (location, "serve-morpher", video_file_name)
+    create_video("stylegan")
+    return "thanks"
     
 if __name__ == "__main__": 
-    app.run(port=8000) 
+    app.run() 
