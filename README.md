@@ -36,7 +36,8 @@ All platforms that I used:
 
 # Acknowledgements 
 
-I did copy code to make the models and generate the videos. 
+I did copy code to make the models and generate the videos. Stop pretending like you don't lmao  
+
 - DCGAN: PyTorch Official Documentation Tutorial 
 - StyleGAN: https://github.com/huangzh13/StyleGAN.pytorch
 - StyleGAN2: https://github.com/NVlabs/stylegan2-ada-pytorch
