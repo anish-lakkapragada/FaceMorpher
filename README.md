@@ -32,6 +32,7 @@ All platforms that I used:
 - AWS S3 Bucket 
 - Localtunnel 
 - Svelte
+- Smelte 
 - PyTorch 
 
 # Acknowledgements 
