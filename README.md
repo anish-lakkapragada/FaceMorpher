@@ -9,7 +9,7 @@
 
 # Why Build It
 
-Seems like a fun way to bring cool machine learning research to web development.
+Seems like a fun way to bring cool machine learning research to web development!
 
 # How it works
 
