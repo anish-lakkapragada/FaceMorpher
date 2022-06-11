@@ -3,7 +3,7 @@
 
   
 
-[FaceMorpher](https://anish-lakkapragada.github.io/FaceMorpher) is an innovative project to get a unique face morph (or <em> interpolation </em> for geeks) on a website. Yes, this means you can see faces <em> morphing </em> into each other! These are created by the beautiful StyleGAN models, and DCGAN for comparison. Go ahead [here](https://anish-lakkapragada.github.io/FaceMorpher).
+[FaceMorpher](https://anish-lakkapragada.github.io/FaceMorpher) is an innovative project to create a unique face morph (or <em> interpolation </em> for geeks) on a website. Yes, this means you can see faces <em> morphing </em> into each other! These are created by the beautiful StyleGAN models, and DCGAN for comparison. Go ahead [here](https://anish-lakkapragada.github.io/FaceMorpher).
 
   
 
